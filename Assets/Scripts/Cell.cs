@@ -9,7 +9,7 @@ public struct CellData
         Number
     }
 
-    Vector3Int position;
+    public Vector3Int position;
     public Type CellType;
     public int Number; 
     public bool IsFlag;
