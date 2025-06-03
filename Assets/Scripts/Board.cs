@@ -20,13 +20,13 @@ public class Board : MonoBehaviour
 
     private Tile getTile(CellData cell)
     {
-        if (cell.IsRevealed)
+        if (cell.isRevealed)
         {
-            if (cell.CellType == CellData.Type.Number)
+            if (cell.cellType == CellData.Type.Number)
             {
-                return tileNumber[cell.Number];
+                return tileNumber[cell.number];
             }
-            else if (cell.CellType == CellData.Type.Empty)
+            else if (cell.cellType == CellData.Type.Empty)
             {
                 return tileEmpty;
             }
@@ -35,7 +35,7 @@ public class Board : MonoBehaviour
                 return tileExploded;
             }
         }
-        else if (cell.IsFlag)
+        else if (cell.isFlag)
         {
             return tileFlag;
         }

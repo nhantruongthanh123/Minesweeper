@@ -10,11 +10,11 @@ public struct CellData
     }
 
     public Vector3Int position;
-    public Type CellType;
-    public int Number; 
-    public bool IsFlag;
-    public bool IsRevealed;
-    public bool IsExploded;
+    public Type cellType;
+    public int number; 
+    public bool isFlag;
+    public bool isRevealed;
+    public bool isExploded;
 }
 
 public class Cell : MonoBehaviour

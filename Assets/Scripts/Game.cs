@@ -44,7 +44,7 @@ public class Game : MonoBehaviour
             {
                 CellData cell = new CellData();
                 cell.position = new Vector3Int(i, j, 0);
-                cell.CellType = CellData.Type.Empty;
+                cell.cellType = CellData.Type.Empty;
                 state[i, j] = cell;
             }
         }
@@ -57,14 +57,14 @@ public class Game : MonoBehaviour
         {
             int w = UnityEngine.Random.Range(0, width - 1);
             int h = UnityEngine.Random.Range(0, height - 1);
-            while (state[w, h].CellType == CellData.Type.Mine)
+            while (state[w, h].cellType == CellData.Type.Mine)
             {
                 w = UnityEngine.Random.Range(0, width - 1);
                 h = UnityEngine.Random.Range(0, height - 1);
             }
 
-            state[w, h].CellType = CellData.Type.Mine;
-            state[w, h].IsRevealed = true;
+            state[w, h].cellType = CellData.Type.Mine;
+            state[w, h].isRevealed = true;
         }
     }
 
@@ -74,7 +74,7 @@ public class Game : MonoBehaviour
         {
             for (int j = 0; j < height; j++)
             {
-                if (state[i, j].CellType != CellData.Type.Mine)
+                if (state[i, j].cellType != CellData.Type.Mine)
                 {
                     int numOfMine = 0;
 
@@ -89,20 +89,20 @@ public class Game : MonoBehaviour
 
                             if (x < 0 || y < 0 || x >= width || y >= height) continue;
 
-                            if (state[x, y].CellType == CellData.Type.Mine) numOfMine++;
+                            if (state[x, y].cellType == CellData.Type.Mine) numOfMine++;
                         }
                     }
 
                     if (numOfMine == 0)
                     {
-                        state[i, j].CellType = CellData.Type.Empty;
-                        state[i, j].IsRevealed = false;
+                        state[i, j].cellType = CellData.Type.Empty;
+                        state[i, j].isRevealed = false;
                         continue;
                     }
 
-                    state[i, j].Number = numOfMine;
-                    state[i, j].CellType = CellData.Type.Number;
-                    state[i, j].IsRevealed = false;
+                    state[i, j].number = numOfMine;
+                    state[i, j].cellType = CellData.Type.Number;
+                    state[i, j].isRevealed = false;
                 }
             }
         }
@@ -129,9 +129,14 @@ public class Game : MonoBehaviour
         }
         else
         {
-            if (state[tilePosition.x, tilePosition.y].IsRevealed == false)
+            if (state[tilePosition.x, tilePosition.y].isFlag == true)
             {
-                state[tilePosition.x, tilePosition.y].IsFlag = true;
+                state[tilePosition.x, tilePosition.y].isFlag = false;
+                state[tilePosition.x, tilePosition.y].isRevealed = false;
+            }
+            else if (state[tilePosition.x, tilePosition.y].isRevealed == false)
+            {
+                state[tilePosition.x, tilePosition.y].isFlag = true;
             }
         }
 
