@@ -4,6 +4,7 @@ using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
+using UnityEngine.UIElements;
 
 public class Game : MonoBehaviour
 {
@@ -64,7 +65,7 @@ public class Game : MonoBehaviour
             }
 
             state[w, h].cellType = CellData.Type.Mine;
-            state[w, h].isRevealed = true;
+            state[w, h].isRevealed = false;
         }
     }
 
@@ -115,6 +116,10 @@ public class Game : MonoBehaviour
         {
             Flag();
         }
+        else if (Input.GetMouseButtonDown(0))
+        {
+            Click();
+        }
 
     }
 
@@ -141,10 +146,64 @@ public class Game : MonoBehaviour
         }
 
         board.Draw(state);
-
-
     }
 
+    private void Click()
+    {
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int tilePosition = board.tilemap.WorldToCell(worldPosition);
 
+        if (tilePosition.x < 0 || tilePosition.x >= width || tilePosition.y < 0 || tilePosition.y >= height)
+        {
+            return;
+        }
+        else
+        {
+            if (state[tilePosition.x, tilePosition.y].isFlag == true || state[tilePosition.x, tilePosition.y].isRevealed == false)
+            {
+                state[tilePosition.x, tilePosition.y].isRevealed = true;
+                if (state[tilePosition.x, tilePosition.y].cellType == CellData.Type.Empty)
+                {
+                    Flood(state[tilePosition.x, tilePosition.y]);
+                }
+            }
+            else if (state[tilePosition.x, tilePosition.y].isRevealed == true)
+            {
+                return;
+            }
+        }
+
+        board.Draw(state);
+    }
+
+    private void Flood(CellData cell)
+    {
+        if (cell.cellType != CellData.Type.Empty) return;
+        int i = cell.position.x;
+        int j = cell.position.y;
+        for (int hor = -1; hor <= 1; hor++)
+        {
+            for (int ver = -1; ver <= 1; ver++)
+            {
+                if (hor == 0 && ver == 0) continue;
+
+                int x = i + hor;
+                int y = j + ver;
+
+                if (x < 0 || y < 0 || x >= width || y >= height) continue;
+
+                if (state[x, y].cellType == CellData.Type.Empty && state[x, y].isRevealed == false)
+                {
+                    state[x, y].isRevealed = true;
+                    Flood(state[x, y]);
+                }
+                else if (state[x, y].cellType == CellData.Type.Number)
+                {
+                    state[x, y].isRevealed = true;
+                }
+            }
+        }
+
+    }
 
 }
