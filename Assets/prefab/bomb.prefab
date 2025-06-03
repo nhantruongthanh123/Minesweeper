@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1673147846654847298}
   - component: {fileID: 4097297459312693043}
   - component: {fileID: 7433189951857775423}
+  - component: {fileID: 5912505169475104728}
   m_Layer: 0
   m_Name: bomb
   m_TagString: Untagged
@@ -110,3 +111,17 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &5912505169475104728
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6592833415428606662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42caec1a67eaf2f4d892b08e7e65d294, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isBomb: 0
+  tileObj: {fileID: 6733920888817771620, guid: 242548a71ad502c41944ac92229e674f, type: 3}
