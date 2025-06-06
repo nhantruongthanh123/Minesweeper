@@ -17,6 +17,7 @@ public class Game : MonoBehaviour
     public int percentMine = 10; 
     private Board board;
     private CellData[,] state;
+    private bool isFirstClick = true;
 
     void Awake()
     {
@@ -55,8 +56,6 @@ public class Game : MonoBehaviour
         numNotRevealed = width * height - width * height * percentMine / 100;
 
         GenerateCell();
-        GenerateMine();
-        GenerateNumber();
 
         board.Draw(state);
         Camera.main.transform.position = new Vector3(width / 2, height / 2, -10f);
@@ -77,14 +76,18 @@ public class Game : MonoBehaviour
         }
     }
 
-    private void GenerateMine()
+    private void GenerateMine(int x, int y)
     {
+        Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        Vector3Int tilePosition = board.tilemap.WorldToCell(worldPosition);
+
+
         mineCount = width * height * percentMine / 100;
         for (int i = 0; i < mineCount; i++)
         {
             int w = UnityEngine.Random.Range(0, width - 1);
             int h = UnityEngine.Random.Range(0, height - 1);
-            while (state[w, h].cellType == CellData.Type.Mine)
+            while (state[w, h].cellType == CellData.Type.Mine || checkClose(x,y,w,h))
             {
                 w = UnityEngine.Random.Range(0, width - 1);
                 h = UnityEngine.Random.Range(0, height - 1);
@@ -93,6 +96,12 @@ public class Game : MonoBehaviour
             state[w, h].cellType = CellData.Type.Mine;
             state[w, h].isRevealed = false;
         }
+    }
+
+    private bool checkClose(int x, int y, int w, int h)
+    {
+        if (ButtonFunction.level == 2) return (w >= x - 2 && w <= x + 2 && h >= y - 2 && h <= y + 1);
+        else return (w >= x - 1 && w <= x + 1 && h >= y - 1 && h <= y + 1);
     }
 
     private void GenerateNumber()
@@ -181,12 +190,21 @@ public class Game : MonoBehaviour
         Vector3 worldPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int tilePosition = board.tilemap.WorldToCell(worldPosition);
 
+
         if (tilePosition.x < 0 || tilePosition.x >= width || tilePosition.y < 0 || tilePosition.y >= height)
         {
             return;
         }
         else
         {
+            if (isFirstClick)
+            {
+                GenerateMine(tilePosition.x, tilePosition.y);
+                GenerateNumber();
+                isFirstClick = false;
+            }
+
+
             if (state[tilePosition.x, tilePosition.y].isFlag == true || state[tilePosition.x, tilePosition.y].isRevealed == false)
             {
                 state[tilePosition.x, tilePosition.y].isRevealed = true;
