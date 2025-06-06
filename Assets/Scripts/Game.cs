@@ -58,7 +58,7 @@ public class Game : MonoBehaviour
         GenerateCell();
 
         board.Draw(state);
-        Camera.main.transform.position = new Vector3(width / 2, height / 2, -10f);
+        Camera.main.transform.position = new Vector3(width / 2 - 3.5f, height / 2, -10f);
         Camera.main.orthographicSize = 8f;
     }
 

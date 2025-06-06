@@ -14,7 +14,7 @@ public class ButtonFunction : MonoBehaviour
     void Start()
     {
         defaultCB = easyButton.colors;
-        level = 0;
+        level = 1;
         Color lightRed = new Color(1f, 0.5f, 0.5f);
         ColorBlock cb = defaultCB;
         cb.normalColor = lightRed;
@@ -32,6 +32,11 @@ public class ButtonFunction : MonoBehaviour
         SceneManager.LoadScene("GameScene");
     }
 
+    public void ClickMenuButton()
+    {
+        SceneManager.LoadScene("MenuScene");
+    }
+
     public void ClickExitButton()
     {
         Application.Quit();
@@ -40,7 +45,7 @@ public class ButtonFunction : MonoBehaviour
     public void ClickEasyLevel()
     {
         level = 0;
-        Color lightRed = new Color(1f, 0.5f, 0.5f); 
+        Color lightRed = new Color(1f, 0.5f, 0.5f);
         ColorBlock cb = easyButton.colors;
         cb.normalColor = lightRed;
         cb.highlightedColor = lightRed;
@@ -56,7 +61,7 @@ public class ButtonFunction : MonoBehaviour
     public void ClickMediumLevel()
     {
         level = 1;
-        Color lightRed = new Color(1f, 0.5f, 0.5f); 
+        Color lightRed = new Color(1f, 0.5f, 0.5f);
         ColorBlock cb = mediumButton.colors;
         cb.normalColor = lightRed;
         cb.highlightedColor = lightRed;
@@ -82,5 +87,6 @@ public class ButtonFunction : MonoBehaviour
         mediumButton.colors = defaultCB;
         easyButton.colors = defaultCB;
     }
+
 
 }
