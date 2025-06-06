@@ -153,7 +153,7 @@ public class Game : MonoBehaviour
 
     private void Update()
     {
-        if (isGameOver) return;
+        if (isGameOver || isWin) return;
 
         if (Input.GetMouseButtonDown(1))
         {
