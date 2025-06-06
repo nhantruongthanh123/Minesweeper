@@ -5,6 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Analytics;
 using UnityEngine.UIElements;
+using TMPro;
 
 public class Game : MonoBehaviour
 {
@@ -18,6 +19,9 @@ public class Game : MonoBehaviour
     private Board board;
     private CellData[,] state;
     private bool isFirstClick = true;
+    public TextMeshProUGUI winText;
+    public TextMeshProUGUI loseText;
+
 
     void Awake()
     {
@@ -54,6 +58,8 @@ public class Game : MonoBehaviour
         isGameOver = false;
         isWin = false;
         numNotRevealed = width * height - width * height * percentMine / 100;
+        winText.gameObject.SetActive(false);
+        loseText.gameObject.SetActive(false);
 
         GenerateCell();
 
@@ -147,6 +153,8 @@ public class Game : MonoBehaviour
 
     private void Update()
     {
+        if (isGameOver) return;
+
         if (Input.GetMouseButtonDown(1))
         {
             Flag();
@@ -156,7 +164,16 @@ public class Game : MonoBehaviour
             Click();
         }
 
-        if (numNotRevealed == 0) isWin = true;
+        if (numNotRevealed == 0)
+        {
+            isWin = true;
+            winText.gameObject.SetActive(true);
+        }
+
+        if (isGameOver)
+        {
+            loseText.gameObject.SetActive(true);
+        }
 
     }
 
