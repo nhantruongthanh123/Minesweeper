@@ -11,6 +11,10 @@ public class Game : MonoBehaviour
     public int width = 14;
     public int height = 14;
     public int mineCount;
+    public bool isGameOver;
+    public bool isWin;
+    public int numNotRevealed;
+    public int percentMine = 10; 
     private Board board;
     private CellData[,] state;
 
@@ -26,7 +30,29 @@ public class Game : MonoBehaviour
 
     private void NewGame()
     {
+        if (ButtonFunction.level == 0)
+        {
+            width = 10;
+            height = 10;
+            percentMine = 12;
+        }
+        else if (ButtonFunction.level == 1)
+        {
+            width = 12;
+            height = 12;
+            percentMine = 15;
+        }
+        else
+        {
+            width = 14;
+            height = 14;
+            percentMine = 18;
+        }
+
         state = new CellData[width, height];
+        isGameOver = false;
+        isWin = false;
+        numNotRevealed = width * height - width * height * percentMine / 100;
 
         GenerateCell();
         GenerateMine();
@@ -53,7 +79,7 @@ public class Game : MonoBehaviour
 
     private void GenerateMine()
     {
-        mineCount = width * height * 15 / 100;
+        mineCount = width * height * percentMine / 100;
         for (int i = 0; i < mineCount; i++)
         {
             int w = UnityEngine.Random.Range(0, width - 1);
@@ -121,6 +147,8 @@ public class Game : MonoBehaviour
             Click();
         }
 
+        if (numNotRevealed == 0) isWin = true;
+
     }
 
     private void Flag()
@@ -162,6 +190,15 @@ public class Game : MonoBehaviour
             if (state[tilePosition.x, tilePosition.y].isFlag == true || state[tilePosition.x, tilePosition.y].isRevealed == false)
             {
                 state[tilePosition.x, tilePosition.y].isRevealed = true;
+                numNotRevealed--;
+
+                if (state[tilePosition.x, tilePosition.y].cellType == CellData.Type.Mine)
+                {
+                    isGameOver = true;
+                    board.Draw(state);
+                    return;
+                }
+
                 if (state[tilePosition.x, tilePosition.y].cellType == CellData.Type.Empty)
                 {
                     Flood(state[tilePosition.x, tilePosition.y]);
@@ -195,11 +232,13 @@ public class Game : MonoBehaviour
                 if (state[x, y].cellType == CellData.Type.Empty && state[x, y].isRevealed == false)
                 {
                     state[x, y].isRevealed = true;
+                    numNotRevealed--;
                     Flood(state[x, y]);
                 }
-                else if (state[x, y].cellType == CellData.Type.Number)
+                else if (state[x, y].cellType == CellData.Type.Number && state[x, y].isRevealed == false)
                 {
                     state[x, y].isRevealed = true;
+                    numNotRevealed--;
                 }
             }
         }
