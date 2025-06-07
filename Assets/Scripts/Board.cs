@@ -45,7 +45,7 @@ public class Board : MonoBehaviour
     public void Draw(CellData[,] state)
     {
         int width = state.GetLength(0);
-        int height = state.GetLength(0);
+        int height = state.GetLength(1);
 
         for (int i = 0; i < width; i++)
         {
